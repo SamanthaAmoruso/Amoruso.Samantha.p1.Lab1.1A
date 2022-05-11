@@ -15,7 +15,7 @@ int listarEmpresas(eEmpresa listaDeEmpresas[], int tam)
 	int todoOk = 0;
 	if (listaDeEmpresas != NULL && tam > 0)
 	{
-		printf("   *** Lista de los Status  ***\n");
+		printf("   *** Lista de las Empresas  ***\n");
 		printf("  Id    Descripcion\n");
 		printf("-----------------------\n");
 		for (int i = 0; i < tam; i++)

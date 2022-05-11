@@ -39,5 +39,7 @@ int encontrarMicroPorId(eMicro listaDeMicros[], int tam, int id);
 
 int modificarPasajero(eMicro listaDeMicros[], int tam, eTipo listaDeTipos[],int tamTipo, eEmpresa listaDeEmpresas[], int tamEmpresa);
 
+void mostrarPorTipo(eMicro listaDeMicros[],int tam,eTipo listaDeTipos[],int tamTipo,eEmpresa listaDeEmpresas[], int tamEmpresa);
 
+void mostrarPorEmpresa(eMicro listaDeMicros[],int tam,eTipo listaDeTipos[],int tamTipo,eEmpresa listaDeEmpresas[], int tamEmpresa);
 

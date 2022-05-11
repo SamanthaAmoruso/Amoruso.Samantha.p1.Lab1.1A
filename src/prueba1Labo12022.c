@@ -164,12 +164,29 @@ int main(void)
 			break;
 
 			case 5:
-				listarEmpresas(listaDeEmpresas, tam_empresa);
+				if(bandera == 1)
+				{
+				//listarEmpresas(listaDeEmpresas, tam_empresa);
+				mostrarPorEmpresa(listaDeMicros,tam_micro, listaDeTipos, tam_tipo, listaDeEmpresas, tam_empresa);
+				}
+				else
+				{
+					printf("no se puede ordenar por empresas porque uds no ingreso empresas\n");
+				}
 
 			break;
 
 			case 6:
-				listarTipos(listaDeTipos, tam_tipo);
+				if(bandera == 1)
+				{
+				//listarTipos(listaDeTipos, tam_tipo);
+				mostrarPorTipo(listaDeMicros,tam_micro, listaDeTipos, tam_tipo, listaDeEmpresas, tam_empresa);
+				}
+				else
+				{
+					printf("No se puede ordenar por tipos, ya que uds no ingreso micros\n");
+				}
+
 			break;
 
 			case 7:
@@ -188,7 +205,6 @@ int main(void)
 				{
 					printf("No se pueden hacer viajes porque no ingresaste micros\n");
 				}
-					//alta viajes aca
 			break;
 
 			case 9:

@@ -457,3 +457,53 @@ int modificarPasajero(eMicro listaDeMicros[], int tam, eTipo listaDeTipos[],int 
 return indice;
 } //fin de modificar pasajero
 
+void mostrarPorTipo(eMicro listaDeMicros[],int tam,eTipo listaDeTipos[],int tamTipo,eEmpresa listaDeEmpresas[], int tamEmpresa)
+{
+    int opcion;
+
+    printf("De que tipo de micro desea el listado?  5001.Comun 5002.CocheCama 5003.Doble 50004.Vip\n");
+    scanf("%d", &opcion);
+    while(opcion < 5001 || opcion > 5004)
+    {
+        printf("De que tipo de micro desea el listado?  5001.Comun 5002.CocheCama 5003.Doble 50004.Vip\n");
+        scanf("%d", &opcion);
+    }
+    printf("ID   ----    idEmpresa  -----   idTipo   ------  capacidad \n");
+    if(listaDeMicros != NULL && tam > 0 )
+    {
+        for(int i= 0; i < tam; i++)
+        {
+            if(listaDeMicros[i].idTipo == opcion)
+            {
+				mostrarMicro(listaDeMicros[i],listaDeTipos,tamTipo,listaDeEmpresas,tamEmpresa);
+            }
+        }
+
+    }
+
+}
+void mostrarPorEmpresa(eMicro listaDeMicros[],int tam,eTipo listaDeTipos[],int tamTipo,eEmpresa listaDeEmpresas[], int tamEmpresa)
+{
+    int opcion;
+
+    printf("De que tipo de empresa desea el listado?  1001.Plusmar 1002.Flecha Bus 1003.Tas 1004.El Rapido\n");
+    scanf("%d", &opcion);
+    while(opcion < 1001 || opcion > 1004)
+    {
+        printf("De que tipo de empresa desea el listado?  1001.Plusmar 1002.Flecha Bus 1003.Tas 1004.El Rapido\n");
+        scanf("%d", &opcion);
+    }
+    printf("ID   ----    idEmpresa  -----   idTipo   ------  capacidad \n");
+    if(listaDeMicros != NULL && tam > 0 )
+    {
+        for(int i= 0; i < tam; i++)
+        {
+            if(listaDeMicros[i].idEmpresa == opcion)
+            {
+				mostrarMicro(listaDeMicros[i],listaDeTipos,tamTipo,listaDeEmpresas,tamEmpresa);
+            }
+        }
+
+    }
+
+}

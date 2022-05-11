@@ -15,7 +15,7 @@ int listarTipos(eTipo listaDeTipos[], int tamTipo)
 
 	if (listaDeTipos != NULL && tamTipo > 0)
 	{
-		printf("   *** Lista de los Status  ***\n");
+		printf("   *** Lista de los Tipos  ***\n");
 		printf("  Id    Descripcion\n");
 		printf("-----------------------\n");
 		for (int i = 0; i < tamTipo; i++)
@@ -52,3 +52,4 @@ int CargardescripTipo(eTipo listaDeTipos[], int tam, int id,char descripcion[])
 	} //fin if
 	return todoOk;
 }
+
