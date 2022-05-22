@@ -54,3 +54,21 @@ int CargarDescripEmpresa(eEmpresa listaDeEmpresas[], int tam, int id,char descri
 	return todoOk;
 }
 
+int validarEmpresas(int id, eEmpresa empresas[], int tam)
+{
+    int todoOk = 0;
+    if(empresas != NULL && tam > 0)
+    {
+    	for(int i=0; i<tam; i++)
+    	{
+    		if(empresas[i].id == id)
+    		{
+    			todoOk = 1;
+    			break;
+    		}
+    	}//fin for
+
+    }//fin if
+return todoOk;
+}//fin de validar empresas
+

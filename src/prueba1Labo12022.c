@@ -50,7 +50,14 @@ int main(void)
 			{1004,"El Rapido"}
 	};
 
-	eDestino listaDeDestinos [tam_Destino];
+
+	eDestino listaDeDestinos [tam_Destino] =
+	{
+			{20000, "Calafate", 22500},
+			{20001, "Bariloche", 103000},
+			{20002,"Iguazu" , 84400},
+			{20003,"Mendoza" , 95600}
+	};
 
 	eViaje listaDeViajes [tam_viaje];
 
@@ -77,7 +84,7 @@ int main(void)
 		printf("-----------------------------------------\n");
 	}// fin del else
 
-	devolucionInicializarViajes= inicializarViajess(listaDeViajes, tam_viaje);
+	devolucionInicializarViajes= inicializarViajes(listaDeViajes, tam_viaje);
 	if(devolucionInicializarViajes == 1)
 	{
 		printf("-----------------------------------------\n");
@@ -103,7 +110,7 @@ int main(void)
 			case 2:
 				if( bandera == 1)
 				{
-					modificarPasajero(listaDeMicros, tam_micro,listaDeTipos,tam_tipo,listaDeEmpresas, tam_empresa);
+					modificarMicro(listaDeMicros, tam_micro,listaDeTipos,tam_tipo,listaDeEmpresas, tam_empresa);
 				}
 				else
 				{
@@ -131,16 +138,15 @@ int main(void)
 						case 1:
 							printf("muestra los MICROS sin ordenar\n");
 							mostrarMicros(listaDeMicros, tam_micro,listaDeTipos,tam_tipo,listaDeEmpresas,tam_empresa);
-							ordenarMicros(listaDeMicros,tam_micro, 1);
+							ordenarMicros(listaDeMicros,tam_micro,listaDeEmpresas,tam_empresa, 1);
 							printf("muestra los micros ordenados asc\n");
 							mostrarMicros(listaDeMicros, tam_micro,listaDeTipos,tam_tipo,listaDeEmpresas,tam_empresa);
-
 						break;
 
 						case 2:
 							printf("muestra los MICROS sin ordenar\n");
 							mostrarMicros(listaDeMicros, tam_micro,listaDeTipos,tam_tipo,listaDeEmpresas,tam_empresa);
-							ordenarMicros(listaDeMicros,tam_micro, 0);
+							ordenarMicros(listaDeMicros,tam_micro,listaDeEmpresas,tam_empresa, 0);
 							printf("muestra los micros ordenados desc\n");
 							mostrarMicros(listaDeMicros, tam_micro,listaDeTipos,tam_tipo,listaDeEmpresas,tam_empresa);
 						break;
@@ -164,42 +170,24 @@ int main(void)
 			break;
 
 			case 5:
-				if(bandera == 1)
-				{
-				//listarEmpresas(listaDeEmpresas, tam_empresa);
-				mostrarPorEmpresa(listaDeMicros,tam_micro, listaDeTipos, tam_tipo, listaDeEmpresas, tam_empresa);
-				}
-				else
-				{
-					printf("no se puede ordenar por empresas porque uds no ingreso empresas\n");
-				}
-
+				listarEmpresas(listaDeEmpresas,tam_empresa);
 			break;
 
 			case 6:
-				if(bandera == 1)
-				{
-				//listarTipos(listaDeTipos, tam_tipo);
-				mostrarPorTipo(listaDeMicros,tam_micro, listaDeTipos, tam_tipo, listaDeEmpresas, tam_empresa);
-				}
-				else
-				{
-					printf("No se puede ordenar por tipos, ya que uds no ingreso micros\n");
-				}
-
+				listarTipos(listaDeTipos, tam_tipo);
 			break;
 
 			case 7:
-				printf("aun no hecho\n");
+				listarDestinos(listaDeDestinos, tam_Destino);
 			break;
 
 			case 8:
 				if(bandera == 1)
 				{
-					agregarViaje(listaDeViajes,tam_viaje,listaDeMicros,tam_micro,listaDeTipos,tam_tipo,
-					listaDeEmpresas,tam_empresa,listaDeFechas,tam_Fechas, listaDeDestinos, tam_Destino, &identificador2);
+				  agregarViaje(listaDeViajes,tam_viaje,listaDeMicros,tam_micro,listaDeTipos,tam_tipo,listaDeEmpresas,
+				  tam_empresa,listaDeFechas,tam_Fechas, listaDeDestinos, tam_Destino, &identificador2);
 
-					bandera2 =1;
+				  bandera2 =1;
 				}
 				else
 				{
@@ -215,18 +203,133 @@ int main(void)
 				}
 				else
 				{
-					printf("no ingresaste micros y/o vuelos\n");
+					printf("no ingresaste micros y/o viajes\n");
 				}
 			break;
 
 			case 10:
+				if(bandera == 1)
+				{
+					switch(menuInformes())
+					{
+						case 1:
+							empresasConMasMicros(listaDeMicros,tam_micro, listaDeEmpresas,tam_empresa);
+						break;
+
+						case 2:
+							porcentajeMicrosVip(listaDeMicros,tam_micro,listaDeTipos,tam_tipo, listaDeEmpresas,tam_empresa);
+						break;
+
+						case 3:
+							empresaConMenosMicros(listaDeMicros,tam_micro, listaDeEmpresas,tam_empresa);
+						break;
+
+						case 4:
+							mostrarPorEmpresa(listaDeMicros,tam_micro, listaDeTipos, tam_tipo, listaDeEmpresas, tam_empresa);
+						break;
+
+						case 5:
+							mostrarPorTipo(listaDeMicros,tam_micro, listaDeTipos, tam_tipo, listaDeEmpresas, tam_empresa);
+						break;
+
+						case 6:
+							if(bandera2 == 1)
+							{
+							mostrarPorDestino(listaDeViajes, tam_viaje ,listaDeMicros, tam_micro,listaDeTipos, tam_tipo,
+									listaDeEmpresas, tam_empresa,listaDeFechas,tam_Fechas, listaDeDestinos, tam_Destino);
+							}
+							else
+							{
+								printf("Para que usted elija los viajes por x destino, tienen que existir viajes\n");
+							}
+						break;
+
+						case 7:
+							if(bandera2 == 1)
+							{
+							mostrarFechaNoviembre(listaDeViajes, tam_viaje ,listaDeMicros, tam_micro,listaDeTipos, tam_tipo,
+									listaDeEmpresas, tam_empresa,listaDeFechas,tam_Fechas, listaDeDestinos, tam_Destino);
+							}
+							else
+							{
+								printf("Necesita haber ingresado viajes para ver si viajaron en noviembre\n");
+							}
+						break;
+
+						case 8:
+							empresaConMasCapacidad(listaDeMicros, tam_micro,listaDeEmpresas, tam_empresa);
+						break;
+
+						case 9:
+							if(bandera2 ==1)
+							{
+							MostrarViajesMismoAnio(listaDeViajes, tam_viaje ,listaDeMicros, tam_micro,listaDeTipos, tam_tipo,
+									listaDeEmpresas, tam_empresa,listaDeFechas,tam_Fechas, listaDeDestinos, tam_Destino);
+							}
+							else
+							{
+								printf("Para saber que viajes fueron/son en el mismo año, tiene que haber viajes\n");
+							}
+						break;
+
+						case 10:
+							if(bandera2 == 1)
+							{
+							MostrarViajesMismoDestino(listaDeViajes, tam_viaje ,listaDeMicros, tam_micro,listaDeTipos, tam_tipo,
+									listaDeEmpresas, tam_empresa,listaDeFechas,tam_Fechas, listaDeDestinos, tam_Destino);
+							}
+							else
+							{
+								printf("para saber que viajes van al mismo destino tiene que haber viajes\n");
+							}
+						break;
+
+						case 11:
+
+						break;
+
+						case 12:
+
+						break;
+
+						case 13:
+
+						break;
+
+						case 14:
+
+						break;
+
+						case 15:
+
+						break;
+
+						case 20:
+							printf("Si desea seguir probando informes escribe S sino N: \n");
+							fflush(stdin);
+							scanf("%c", &salir);
+						break;
+
+						default:
+							printf("error, elija una opcion del 1 al 20\n");
+						break;
+
+					}//fin switch
+				}
+				else
+				{
+					printf("Tiene que ingresar micros para poder hacer algun ordenamiento o informe \n");
+				}
+			break;
+
+			case 11:
 				printf("Si desea seguir escribe S sino N: \n");
 				fflush(stdin);
 				scanf("%c", &seguir);
 			break;
 
 			default:
-				printf("ingrese una opcion del 1 al 10\n");
+				printf("ingrese una opcion del 1 al 11\n");
 			break;
 
 		}//fin switch

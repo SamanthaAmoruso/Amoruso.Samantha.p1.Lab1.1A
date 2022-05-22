@@ -19,7 +19,7 @@ int inicializarMicros(eMicro listaDeMicros[], int tam);
 
 int buscarLibre(eMicro listaDeMicros[], int tam);
 
-int buscarPasajero(eMicro listaDeMicros[], int tam, int identificador);
+int buscarMicro(eMicro listaDeMicros[], int tam, int identificador);
 
 int altamicro(eMicro listaDeMicros[], int tam, int* identificador);
 
@@ -31,15 +31,31 @@ int mostrarMicros(eMicro listaDeMicros[], int tam, eTipo listaDeTipos[], int tam
 
 int bajaMicro(eMicro listaDeMicros[],int tam,eTipo listaDeTipos[],int tamTipo,eEmpresa listaDeEmpresas[], int tamEmpresa);
 
-int ordenarMicros(eMicro listaDeMicros[],int tam, int orden);
+int ordenarMicros(eMicro listaDeMicros[],int tam,eEmpresa listaDeEmpresas[], int tamEmpresa, int orden);
 
 int menuOrdenar();
 
 int encontrarMicroPorId(eMicro listaDeMicros[], int tam, int id);
 
-int modificarPasajero(eMicro listaDeMicros[], int tam, eTipo listaDeTipos[],int tamTipo, eEmpresa listaDeEmpresas[], int tamEmpresa);
+int modificarMicro(eMicro listaDeMicros[], int tam, eTipo listaDeTipos[],int tamTipo, eEmpresa listaDeEmpresas[], int tamEmpresa);
 
 void mostrarPorTipo(eMicro listaDeMicros[],int tam,eTipo listaDeTipos[],int tamTipo,eEmpresa listaDeEmpresas[], int tamEmpresa);
 
 void mostrarPorEmpresa(eMicro listaDeMicros[],int tam,eTipo listaDeTipos[],int tamTipo,eEmpresa listaDeEmpresas[], int tamEmpresa);
+
+int menuInformes();
+
+void empresasConMasMicros(eMicro listaDeMicros[],int tam, eEmpresa listaDeEmpresas[], int tamEmpresa);
+
+int porcentajeMicrosVip(eMicro listaDeMicros[], int tamMicro, eTipo listaDeTipos[], int tamTipo,
+						eEmpresa listaDeEmpresas[], int tamEmpresa);
+
+int empresaConMenosMicros(eMicro listaDeMicros[], int tam, eEmpresa listaDeEmpresas[],int tamEmpresa);
+
+//---------------------------------
+
+int empresaConMasCapacidad(eMicro listaDeMicros[], int tam, eEmpresa listaDeEmpresas[],int tamEmpresa);
+
+
+
 

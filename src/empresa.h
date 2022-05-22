@@ -20,3 +20,5 @@ int isEmpty;
 int listarEmpresas(eEmpresa listaDeEmpresas[], int tam);
 
 int CargarDescripEmpresa(eEmpresa listaDeEmpresas[], int tam, int id,char descripcion[]);
+
+int validarEmpresas(int id, eEmpresa empresas[], int tam);

@@ -50,8 +50,6 @@ int agregarViaje(eViaje listaDeViajes[], int tamListaViajes, eMicro listaDeMicro
 eTipo listaDeTipos[], int tamTipo, eEmpresa listaDeEmpresas[], int tamEmpresa, eFecha listaDeFechas[], int tamF,
 eDestino listaDeDestinos[], int tamD, int* idViaje);
 
-int inicializarViajess(eViaje listaDeViajes[], int tamListaViajes);
-
 void mostrarViaje(eViaje unViaje,eMicro listaDeMicros[], int tamM,eTipo listaDeTipos[], int tamTipo,
 eEmpresa listaDeEmpresas[], int tamEmpresa, eFecha listaDeFechas[], int tamF, eDestino listaDeDestinos[], int tamD);
 
@@ -59,3 +57,18 @@ void mostrarViajes(eViaje listaDeViajes[], int tamListaViajes, eMicro listaDeMic
 		eEmpresa listaDeEmpresas[], int tamEmpresa, eFecha listaDeFechas[], int tamF, eDestino listaDeDestinos[], int tamD);
 
 
+void CargarDescripcionDestino(eDestino listaDeDestinos[], int tamDestinos, int identificador, char descripcion[], float* precio);
+
+void mostrarPorDestino(eViaje listaDeViajes[], int tamListaViajes ,eMicro listaDeMicros[], int tamM,eTipo listaDeTipos[], int tamTipo,
+		eEmpresa listaDeEmpresas[], int tamEmpresa, eFecha listaDeFechas[], int tamF, eDestino listaDeDestinos[], int tamD);
+
+void mostrarFechaNoviembre(eViaje listaDeViajes[], int tamListaViajes ,eMicro listaDeMicros[], int tamM,eTipo listaDeTipos[], int tamTipo,
+eEmpresa listaDeEmpresas[], int tamEmpresa, eFecha listaDeFechas[], int tamF, eDestino listaDeDestinos[], int tamD);
+
+void MostrarViajesMismoAnio(eViaje listaDeViajes[],int tamViaje ,eMicro listaDeMicros[],int tamM,
+	eTipo listaDeTipos[],int tamTipo, eEmpresa listaDeEmpresas[], int tamEmpresa, eFecha listaDeFechas[],
+	int tamF, eDestino listaDeDestinos[], int tamD);
+
+void MostrarViajesMismoDestino(eViaje listaDeViajes[],int tamViaje ,eMicro listaDeMicros[],int tamM,
+	eTipo listaDeTipos[],int tamTipo, eEmpresa listaDeEmpresas[], int tamEmpresa, eFecha listaDeFechas[],
+	int tamF, eDestino listaDeDestinos[], int tamD);

@@ -60,9 +60,6 @@ eEmpresa listaDeEmpresas[], int tamEmpresa, eFecha listaDeFechas[], int tamF, eD
 	int todoOk=-1;
 	int mimicro=0;
 	int miDestino=0;
-	int dia=0;
-	int mes=0;
-	int anio=0;
 	int validacionFecha=0;
 	int viajeLibre=0;
 	eFecha auxFecha;
@@ -76,7 +73,7 @@ eEmpresa listaDeEmpresas[], int tamEmpresa, eFecha listaDeFechas[], int tamF, eD
 		printf("ingrese el id del viaje al que quiere subirse\n");
 		mostrarMicros(listaDeMicros,tamListaViajes, listaDeTipos,tamTipo,listaDeEmpresas,tamEmpresa);
 		scanf("%d", &mimicro);
-		while (listaDeViajes[viajeLibre].idMicro != mimicro && listaDeViajes[viajeLibre].isEmpty == VACIO)
+		while (listaDeMicros[viajeLibre].id != mimicro && listaDeViajes[viajeLibre].isEmpty == VACIO)
 		{
 			printf("error ingrese un id de viaje exsistente\n");
 			mostrarMicros(listaDeMicros,tamListaViajes, listaDeTipos,tamTipo,listaDeEmpresas,tamEmpresa);
@@ -84,12 +81,12 @@ eEmpresa listaDeEmpresas[], int tamEmpresa, eFecha listaDeFechas[], int tamF, eD
 		}
 
 		printf("ingrese el id del destino al que viaja \n");
-		mostrarDestinos(listaDeDestinos, tamD);
+		listarDestinos(listaDeDestinos, tamD);
 		scanf("%d",&miDestino);
 		while(miDestino < 20000 || miDestino > 20003)
 		{
 			printf("error, ingrese el id del destino al que viaja \n");
-			mostrarDestinos(listaDeDestinos, tamD);
+			listarDestinos(listaDeDestinos, tamD);
 			scanf("%d",&miDestino);
 		}
 
@@ -100,7 +97,7 @@ eEmpresa listaDeEmpresas[], int tamEmpresa, eFecha listaDeFechas[], int tamF, eD
 		{
 			printf("error,Ingrese una fecha valida dd/mm/aaaa\n");
 			scanf("%d/%d/%d",&auxFecha.dia,&auxFecha.mes,&auxFecha.anio);
-			validacionFecha=validarFecha(dia,mes,anio);
+			validacionFecha=validarFecha(auxFecha.dia,auxFecha.mes,auxFecha.anio);
 		}
 
 		listaDeViajes[viajeLibre].idMicro =mimicro;
@@ -123,31 +120,16 @@ eEmpresa listaDeEmpresas[], int tamEmpresa, eFecha listaDeFechas[], int tamF, eD
 return todoOk;
 }//fin de la funcion agregar vuelos
 
-int inicializarViajess(eViaje listaDeViajes[], int tamListaViajes)
+void CargarDescripcionDestino(eDestino listaDeDestinos[], int tamDestinos, int identificador, char descripcion[], float* precio)
 {
-   int retorno = 0;
-   if(listaDeViajes != NULL && tamListaViajes > 0)
-   {
-	   for(int i= 0; i < tamListaViajes; i++)
-	   {
-		   listaDeViajes[i].isEmpty = VACIO;
-		   retorno = 1;
-	   }// fin del for
-
-   }// fin del if
-
-   return retorno;
-}// fin de inicializar aviones
-
-void CargarDescripcionDestino(eDestino listaDeDestinos[], int tamDestinos, int identificador, char descripcion[])
-{
-	if (listaDeDestinos !=NULL && tamDestinos > 0 && identificador > 0)
+	if (listaDeDestinos !=NULL && tamDestinos > 0 && identificador > 0 && precio > 0)
 	{
 		for(int i = 0; i< tamDestinos; i++)
 		{
 			if(listaDeDestinos[i].idDestino == identificador)
 			{
 				strcpy(descripcion,listaDeDestinos[i].descripcion);
+				(*precio) = listaDeDestinos[i].precio;
 				break;
 			}
 
@@ -155,16 +137,18 @@ void CargarDescripcionDestino(eDestino listaDeDestinos[], int tamDestinos, int i
 	}//fin if null
 }//fin void cargar
 
-void mostrarViaje(eViaje unViaje,eMicro listaDeMicros[], int tamM,eTipo listaDeTipos[], int tamTipo,
+void mostrarViaje(eViaje unViaje, eMicro listaDeMicros[], int tamM, eTipo listaDeTipos[], int tamTipo,
 eEmpresa listaDeEmpresas[], int tamEmpresa, eFecha listaDeFechas[], int tamF, eDestino listaDeDestinos[], int tamD)
 
 {
 	char DescripcionDestino[20];
+	float precio;
 
-	CargarDescripcionDestino(listaDeDestinos, tamD, unViaje.idDestino, DescripcionDestino);
+	CargarDescripcionDestino(listaDeDestinos, tamD, unViaje.idDestino, DescripcionDestino, &precio);
 
-	printf(" %d %3d %d %s %5d %d %d ",unViaje.id, unViaje.idMicro, unViaje.idDestino,
-			DescripcionDestino,unViaje.fecha.dia, unViaje.fecha.mes, unViaje.fecha.anio);
+
+	printf(" %d %3d %4s %.2f %5d %d %d ",unViaje.id, unViaje.idMicro,
+			DescripcionDestino, precio, unViaje.fecha.dia, unViaje.fecha.mes, unViaje.fecha.anio);
 
 	printf("\n");
 
@@ -180,7 +164,7 @@ void mostrarViajes(eViaje listaDeViajes[], int tamListaViajes, eMicro listaDeMic
 	    {
 
 			printf("--------------- VUELOS INGRESADOS ------------------\n");
-			printf("Id idAvion avion  precio  destino   fecha   \n");
+			printf("Id  idmicro    destino   precio   fecha   \n");
 			for(int i=0; i< tamListaViajes; i++)
 			{
 				if(listaDeViajes[i].isEmpty != VACIO)
@@ -200,4 +184,150 @@ void mostrarViajes(eViaje listaDeViajes[], int tamListaViajes, eMicro listaDeMic
 
 }//fin mostrar vuelos
 
+void mostrarPorDestino(eViaje listaDeViajes[], int tamListaViajes ,eMicro listaDeMicros[], int tamM,eTipo listaDeTipos[], int tamTipo,
+		eEmpresa listaDeEmpresas[], int tamEmpresa, eFecha listaDeFechas[], int tamF, eDestino listaDeDestinos[], int tamD)
+{
+    int opcion;
 
+    printf("De que tipo de destino desea el listado?  20000.Calafate 20001.Bariloche 20002.Iguazu 20003.Mendoza\n");
+    scanf("%d", &opcion);
+    while(opcion < 20000 || opcion > 20004)
+    {
+        printf("error, De que tipo de destino desea el listado?  20000.Calafate 20001.Bariloche 20002.Iguazu 20003.Mendoza\n");
+        scanf("%d", &opcion);
+    }
+    printf("ID   --idmicro--    id destino ----  destino  --- -----fecha\n");
+    if(listaDeDestinos != NULL && tamD > 0 )
+    {
+        for(int i= 0; i < tamD; i++)
+        {
+            if(listaDeDestinos[i].idDestino == opcion)
+            {
+            	mostrarViaje(listaDeViajes[i],listaDeMicros,tamM,listaDeTipos, tamTipo, listaDeEmpresas,tamEmpresa,
+            								listaDeFechas, tamF,listaDeDestinos, tamD);
+            }
+            else if(listaDeDestinos[i].idDestino != opcion)
+			{
+				printf("No hay este tipo de destino para mostrar\n");
+				break;
+			}
+        }//fin for
+
+    }//fin if null
+
+}//fin void
+
+void mostrarFechaNoviembre(eViaje listaDeViajes[], int tamListaViajes ,eMicro listaDeMicros[], int tamM,eTipo listaDeTipos[], int tamTipo,
+		eEmpresa listaDeEmpresas[], int tamEmpresa, eFecha listaDeFechas[], int tamF, eDestino listaDeDestinos[], int tamD)
+{
+	int flag = 1;
+	if(listaDeViajes!= NULL && tamListaViajes > 0 && listaDeTipos !=NULL && tamTipo > 0 && listaDeDestinos!= NULL
+			&& tamD > 0 && listaDeMicros!=NULL && tamM > 0 && listaDeFechas!=NULL && tamF > 0)
+	{
+
+		printf("---------------viajes con fecha de noviembre ------------------\n");
+		printf("Id idmicro  destino precio  fecha   \n");
+		for(int i=0; i< tamF; i++)
+		{
+			if(listaDeViajes[i].fecha.mes == 11)
+			{
+				mostrarViaje(listaDeViajes[i],listaDeMicros,tamM,listaDeTipos, tamTipo, listaDeEmpresas,tamEmpresa,
+											listaDeFechas, tamF,listaDeDestinos, tamD);
+				flag = 0;
+
+			}//fin if
+			if(flag == 1)
+			{
+				printf("no hay viajes en noviembre\n");
+				break;
+			}
+		}//fin for
+
+	}//fin if null
+
+}//fin void
+
+void MostrarViajesMismoAnio(eViaje listaDeViajes[],int tamViaje ,eMicro listaDeMicros[],int tamM,
+	eTipo listaDeTipos[],int tamTipo, eEmpresa listaDeEmpresas[], int tamEmpresa, eFecha listaDeFechas[],
+	int tamF, eDestino listaDeDestinos[], int tamD)
+{
+	eFecha auxFecha;
+
+	printf("elija un año entre 2001 y 2029 para listar\n");
+	scanf("%d", &auxFecha.anio);
+
+	while (auxFecha.anio < 2001 || auxFecha.anio > 2029)
+	{
+		printf("error,Ingrese un año valido entre 2001 y 2029 aaaa\n");
+		scanf("%d",&auxFecha.anio);
+	}
+	int bandera = 1;
+
+	if(listaDeViajes!= NULL && tamViaje > 0 && listaDeTipos !=NULL && tamTipo > 0 && listaDeDestinos!= NULL
+		&& tamD > 0 && listaDeMicros!=NULL && tamM > 0 && listaDeFechas!=NULL && tamF > 0)
+	{
+
+			printf("---------------viajes con el mismo año ------------------\n");
+			printf("Id idmicro   destino   precio  fecha   \n");
+			for(int i=0; i< tamF; i++)
+			{
+				if(listaDeViajes[i].fecha.anio == auxFecha.anio)
+				{
+					mostrarViaje(listaDeViajes[i],listaDeMicros,tamM,listaDeTipos, tamTipo, listaDeEmpresas,
+							tamEmpresa, listaDeFechas, tamF,listaDeDestinos, tamD);
+					bandera = 0;
+
+				}//fin if
+				if(bandera == 1)
+				{
+					printf("no hay viajes en ese año\n");
+					break;
+				}
+			}//fin for
+
+	}//fin if null
+
+}//fin de la funcion void
+
+void MostrarViajesMismoDestino(eViaje listaDeViajes[],int tamViaje ,eMicro listaDeMicros[],int tamM,
+	eTipo listaDeTipos[],int tamTipo, eEmpresa listaDeEmpresas[], int tamEmpresa, eFecha listaDeFechas[],
+	int tamF, eDestino listaDeDestinos[], int tamD)
+{
+	int miDestino;
+	int bandera = 1;
+
+	if(listaDeViajes!= NULL && tamViaje > 0 && listaDeTipos !=NULL && tamTipo > 0 && listaDeDestinos!= NULL
+			&& tamD > 0 && listaDeMicros!=NULL && tamM > 0 && listaDeFechas!=NULL && tamF > 0)
+	{
+		printf("ingrese el id del destino al que viaja \n");
+		listarDestinos(listaDeDestinos, tamD);
+		scanf("%d",&miDestino);
+		while(miDestino < 20000 || miDestino > 20003)
+		{
+			printf("error, ingrese el id del destino al que viaja \n");
+			listarDestinos(listaDeDestinos, tamD);
+			scanf("%d",&miDestino);
+			bandera = -1;
+		}
+
+		printf("---------------viajes con el mismo destino ------------------\n");
+		printf("IdViaje idmicro   destino   precio  fecha   \n");
+		for(int i=0; i< tamD; i++)
+		{
+			if(listaDeViajes[i].idDestino == miDestino && listaDeViajes[i].isEmpty == OCUPADO)
+			{
+				mostrarViaje(listaDeViajes[i],listaDeMicros,tamM,listaDeTipos, tamTipo, listaDeEmpresas,
+						tamEmpresa, listaDeFechas, tamF,listaDeDestinos, tamD);
+				bandera = 0;
+
+			}//fin if
+			if(bandera == -1)
+			{
+				printf("no hay viajes que vayan al destino del id%d\n", miDestino);
+				break;
+			}
+		}//fin for
+
+	}//fin if null
+
+}//fin funcion void

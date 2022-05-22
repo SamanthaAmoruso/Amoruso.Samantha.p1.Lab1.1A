@@ -9,50 +9,48 @@
 #include <string.h>
 #include "destino.h"
 
-char destinos [4][15] = {"calafate", "Bariloche", "Iguazu" , "Mendoza" };
-float preciosDestino[4] = {22250,103000,84400,95600};
-
-void harcodearDestino(eDestino listaDeDestinos[], int tamanioListaDestino)
+int listarDestinos(eDestino listaDeDestinos[], int tam)
 {
-    int identificador = 20000;
-    if(listaDeDestinos != NULL)
-    {
-       for(int i= 0; i < tamanioListaDestino; i++)
-       {
-           strcpy(listaDeDestinos[i].descripcion,destinos[i]);
+	int todoOk = 0;
 
-           listaDeDestinos[i].idDestino = identificador;
-           identificador ++;
-           listaDeDestinos[i].isEmpty = 0;
-
-       }
-    }
-}
-
-void harcodearPrecioDestino(eDestino listaDeDestinos[], int tamanioListaDestino)
-{
-    if(listaDeDestinos != NULL)
-    {
-       for(int i= 0; i < tamanioListaDestino; i++)
-       {
-          listaDeDestinos[i].precio = preciosDestino[i];
-
-           listaDeDestinos[i].isEmpty = 0;
-
-       }
-    }
-}
-
-void mostrarDestinos(eDestino listaDeDestinos[], int tamDestino )
-{
-	if (listaDeDestinos !=NULL && tamDestino > 0)
+	if (listaDeDestinos != NULL && tam > 0)
 	{
-		printf("---------- LISTA DE DESTINOS ----------\n");
-		printf("idDestino-----  ciudad  ----- costo pasaje\n");
-		for ( int i = 0; i <tamDestino; i++)
+		printf("   *** Lista de los Destinos  ***\n");
+		printf("  Id    destino    precio\n");
+		printf("-----------------------\n");
+		for (int i = 0; i < tam; i++)
 		{
-			printf("%d  %s %15.2f",listaDeDestinos[i].idDestino, listaDeDestinos[i].descripcion, listaDeDestinos[i].precio);
-			printf("\n");
+			printf("   %4d    %10s %.2f\n", listaDeDestinos[i].idDestino , listaDeDestinos[i].descripcion, listaDeDestinos[i].precio);
 		}
-	}
+		printf("\n\n");
+
+		todoOk = 1;
+	} //fin if
+
+return todoOk;
 }
+
+int CargardescripDestino(eDestino listaDeDestinos[], int tam, int id,char descripcion[])
+{
+	int todoOk = 0;
+
+	if (listaDeDestinos != NULL && tam > 0 && id >= 5001 && id <= 5004 && descripcion != NULL)
+	{
+		for (int i = 0; i < tam; i++)
+		{
+
+			if (listaDeDestinos[i].idDestino == id)
+			{
+				strcpy(descripcion, listaDeDestinos[i].descripcion);
+				break;
+			}
+
+		} //fin for
+
+		todoOk = 1;
+
+	} //fin if
+	return todoOk;
+}
+
+
