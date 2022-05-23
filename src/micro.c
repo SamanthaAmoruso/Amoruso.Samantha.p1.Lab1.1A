@@ -5,7 +5,6 @@
  *      Author: User
  */
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -16,7 +15,9 @@
 #include "fecha.h"
 #include "empresa.h"
 #include "micro.h"
+#include "chofer.h"
 #include "viaje.h"
+#include "chofer.h"
 
 int inicializarMicros(eMicro listaDeMicros[], int tam)
 {
@@ -48,7 +49,9 @@ int menu ()
     printf(" 8.Alta viaje\n");
     printf(" 9.Listar viajes\n");
     printf(" 10.Menu de muchos informes\n");
-    printf(" 11.Salir del menu\n");
+    printf(" 11.Harcodeo de 5 micros\n");
+    printf(" 12.Harcodeo de 5 viajes\n");
+    printf(" 13.Salir del menu\n");
     printf("-----------------------------------------\n");
 
     printf("\n Elija una opcion: ");
@@ -101,12 +104,10 @@ int menuInformes()
     printf(" 8.Mostrar la/las empresa/s con mas capacidad\n");
     printf(" 9.Mostrar todos los viajes que estan en X año\n");
     printf(" 10.Mostrar todos los viajes que fueron a X destino\n");
-    printf(" 11. \n");
-    printf(" 12. \n");
-    printf(" 13. \n");
-    printf(" 14. \n");
-    printf(" 15. \n");
-    printf(" 20.Salir\n");
+    printf(" 11.Mostrar todos los viajes que hizo X micro\n");
+    printf(" 12.Mostrar suma del precio de X micro\n");
+    printf(" 13.Mostrar viajes con la misma fecha\n");
+    printf(" 14.Salir\n");
     printf("-----------------------------------------\n");
 
     printf("\n Elija una opcion: ");
@@ -142,7 +143,7 @@ int buscarMicro(eMicro listaDeMicros[], int tam, int identificador)
 	{
 	   for (int i=0; i< tam; i++)
 	   {
-		   if (listaDeMicros[i].id && listaDeMicros[i].isEmpty)
+		   if (listaDeMicros[i].id && listaDeMicros[i].isEmpty == OCUPADO)
 		   {
 			   indice = i;
 			   break;
@@ -169,6 +170,19 @@ int altamicro(eMicro listaDeMicros[], int tam, int* identificador)
     	{
 			if(listaDeMicros[i].isEmpty == VACIO)
 			{
+					printf("ingrese el id del nombre del chofer que manejara este micro\n"
+					"1.Lucrecia, 2.CarloMagno, 3.Sebastian, 4.Estela , 5.Jessica\n");
+					fflush(stdin);
+					scanf("%d", &aux);
+					while(aux < 1 || aux > 5)
+					{
+						printf("error, ingrese el id de un nombre existente");
+						fflush(stdin);
+						scanf("%d", &aux);
+					}//fin while
+
+					listaDeMicros[i].idChofer = aux;
+
 					printf("ingrese el tipo de micro: 5001.Comun 5002.CocheCama 5003.Doble 5004.Vip\n");
 				    fflush(stdin);
 				    scanf("%d",&aux);
@@ -177,7 +191,8 @@ int altamicro(eMicro listaDeMicros[], int tam, int* identificador)
 						printf("error,ingrese el tipo de micro: 5001.Comun 5002.CocheCama 5003.Doble 5004.Vip\n");
 						fflush(stdin);
 						scanf("%d",&aux);
-				    }
+				    }//fin while
+
 					listaDeMicros[i].idTipo = aux;
 
 				    printf("ingrese la empresa con la que desea viajar 1001.Plusmar 1002.Flecha Bus 1003.Tas 1004.El Rapido: \n");
@@ -241,34 +256,40 @@ int sonLetras(char cadena[])
 return todoOk;
 }// fin de la funcion sonLetras
 
-void mostrarMicro(eMicro unMicro,eTipo listaDeTipos[], int tamTipo,eEmpresa listaDeEmpresas[], int tamEmpresa)
+void mostrarMicro(eMicro unMicro,eTipo listaDeTipos[],int tamTipo,eEmpresa listaDeEmpresas[],
+		int tamEmpresa, eChofer listaDeChoferes[], int tamChofer)
 {
     char descripTipo[20];
     char DescripcionEmpresa[20];
+    char nombreChofer[25];
+
+    cargarNombreChofer(listaDeChoferes, tamChofer, unMicro.idChofer , nombreChofer);
 
     CargardescripTipo(listaDeTipos, tamTipo, unMicro.idTipo ,descripTipo);
     CargarDescripEmpresa(listaDeEmpresas, tamEmpresa, unMicro.idEmpresa , DescripcionEmpresa);
 
-    printf(" %d %12s %10s  %10d", unMicro.id, DescripcionEmpresa, descripTipo, unMicro.capacidad);
+    printf(" %d %12s %s %10s  %10d", unMicro.id, DescripcionEmpresa, nombreChofer ,descripTipo, unMicro.capacidad);
 
     printf("\n");
 }
 
-int mostrarMicros(eMicro listaDeMicros[], int tam, eTipo listaDeTipos[], int tamTipo,eEmpresa listaDeEmpresas[], int tamEmpresa)
+int mostrarMicros(eMicro listaDeMicros[], int tam, eTipo listaDeTipos[], int tamTipo,eEmpresa listaDeEmpresas[],
+		int tamEmpresa, eChofer listaDeChoferes[], int tamChofer)
 {
 	int retorno = -1;
 
-	if(listaDeMicros != NULL && tam > 0 && listaDeTipos !=NULL && tamTipo > 0 && listaDeEmpresas !=NULL && tamEmpresa >0)
+	if(listaDeMicros != NULL && tam > 0 && listaDeTipos !=NULL && tamTipo > 0 && listaDeEmpresas !=NULL && tamEmpresa >0
+			&& listaDeChoferes != NULL && tamChofer > 0)
 	{
 		 printf("-------------------------- LISTA DE MICROS ------------------\n");
-	     printf("ID   ----    idEmpresa  -----   idTipo   ------  capacidad \n");
+	     printf("ID -- idEmpresa -- chofer -- idTipo -- capacidad \n");
 	     printf("----------------------------------------------------------------\n");
 
 		for(int i=0; i<tam; i++)
 		 {
 			if(listaDeMicros[i].isEmpty == OCUPADO)
 			{
-				mostrarMicro(listaDeMicros[i],listaDeTipos,tamTipo,listaDeEmpresas,tamEmpresa);
+				mostrarMicro(listaDeMicros[i],listaDeTipos,tamTipo,listaDeEmpresas,tamEmpresa, listaDeChoferes, tamChofer);
 				retorno = 1;
 			}// fin del if
 
@@ -283,13 +304,13 @@ int mostrarMicros(eMicro listaDeMicros[], int tam, eTipo listaDeTipos[], int tam
 return retorno;
 } // fin de mostrar Pasajeros
 
-int bajaMicro(eMicro listaDeMicros[],int tam,eTipo listaDeTipos[],int tamTipo,eEmpresa listaDeEmpresas[], int tamEmpresa)
+int bajaMicro(eMicro listaDeMicros[],int tam,eTipo listaDeTipos[],int tamTipo,eEmpresa listaDeEmpresas[],
+		int tamEmpresa, eChofer listaDeChoferes[], int tamChofer)
 {
 	int todoOk = -1;
 	int auxiliarBaja =0;
 	if(listaDeMicros != NULL && tam > 0)
 	{
-		mostrarMicros(listaDeMicros,tam, listaDeTipos,tamTipo,listaDeEmpresas,tamEmpresa);
 		printf("Ingrese el ID del micro que desea dar de baja: ");
 		scanf("%d", &auxiliarBaja);
 		if (auxiliarBaja > tam)
@@ -379,7 +400,8 @@ int encontrarMicroPorId(eMicro listaDeMicros[], int tam, int id)
 return indice;
 }//fin findPassengersByid
 
-int modificarMicro(eMicro listaDeMicros[], int tam, eTipo listaDeTipos[],int tamTipo, eEmpresa listaDeEmpresas[], int tamEmpresa)
+int modificarMicros(eMicro listaDeMicros[], int tam, eTipo listaDeTipos[],int tamTipo, eEmpresa listaDeEmpresas[],
+		int tamEmpresa,eChofer listaDeChoferes[], int tamChofer)
 {
 	   int modificacion;
 	   int indice = -1;
@@ -391,9 +413,9 @@ int modificarMicro(eMicro listaDeMicros[], int tam, eTipo listaDeTipos[],int tam
 
       if (listaDeMicros != NULL && tam > 0 && listaDeTipos !=NULL && tamTipo > 0)
       {
-		  mostrarMicros(listaDeMicros, tam,listaDeTipos,tamTipo,listaDeEmpresas,tamEmpresa);
-		  printf("ingrese el id del micro que desea modificar: \n");
-		  scanf("%d", &auxiliarModif);
+  		mostrarMicros(listaDeMicros,tam, listaDeTipos,tamTipo,listaDeEmpresas,tamEmpresa,listaDeChoferes, tamChofer);
+		printf("ingrese el id del micro que desea modificar: \n");
+		scanf("%d", &auxiliarModif);
 
 		  indexEncontrado = encontrarMicroPorId(listaDeMicros, tam, auxiliarModif);
 
@@ -424,7 +446,7 @@ int modificarMicro(eMicro listaDeMicros[], int tam, eTipo listaDeTipos[],int tam
 							  }
 
 					  		printf("asi quedo editado su micro:\n ");
-					  		mostrarMicros(listaDeMicros, tam,listaDeTipos,tamTipo,listaDeEmpresas,tamEmpresa);
+					  		mostrarMicros(listaDeMicros,tam, listaDeTipos,tamTipo,listaDeEmpresas,tamEmpresa,listaDeChoferes, tamChofer);
 					  	break;
 
 					      case 2:
@@ -446,7 +468,7 @@ int modificarMicro(eMicro listaDeMicros[], int tam, eTipo listaDeTipos[],int tam
 								  indice = 1;
 							  }
 							  printf("asi quedo editado su micro:\n ");
-							  mostrarMicros(listaDeMicros, tam,listaDeTipos,tamTipo,listaDeEmpresas,tamEmpresa);
+							  mostrarMicros(listaDeMicros,tam, listaDeTipos,tamTipo,listaDeEmpresas,tamEmpresa,listaDeChoferes, tamChofer);
 						  break;
 
 					      case 3:
@@ -474,7 +496,8 @@ int modificarMicro(eMicro listaDeMicros[], int tam, eTipo listaDeTipos[],int tam
 return indice;
 } //fin de modificar pasajero
 
-void mostrarPorTipo(eMicro listaDeMicros[],int tam,eTipo listaDeTipos[],int tamTipo,eEmpresa listaDeEmpresas[], int tamEmpresa)
+void mostrarPorTipo(eMicro listaDeMicros[],int tam,eTipo listaDeTipos[],int tamTipo,eEmpresa listaDeEmpresas[], int tamEmpresa,
+		eChofer listaDeChoferes[], int tamChofer)
 {
     int opcion;
 
@@ -492,7 +515,7 @@ void mostrarPorTipo(eMicro listaDeMicros[],int tam,eTipo listaDeTipos[],int tamT
         {
             if(listaDeMicros[i].idTipo == opcion)
             {
-				mostrarMicro(listaDeMicros[i],listaDeTipos,tamTipo,listaDeEmpresas,tamEmpresa);
+				mostrarMicro(listaDeMicros[i],listaDeTipos,tamTipo,listaDeEmpresas,tamEmpresa, listaDeChoferes, tamChofer);
             }
             else if(listaDeMicros[i].idTipo != opcion)
             {
@@ -505,7 +528,8 @@ void mostrarPorTipo(eMicro listaDeMicros[],int tam,eTipo listaDeTipos[],int tamT
 
 }//fin void
 
-void mostrarPorEmpresa(eMicro listaDeMicros[],int tam,eTipo listaDeTipos[],int tamTipo,eEmpresa listaDeEmpresas[], int tamEmpresa)
+void mostrarPorEmpresa(eMicro listaDeMicros[],int tam,eTipo listaDeTipos[],int tamTipo,eEmpresa listaDeEmpresas[], int tamEmpresa,
+		eChofer listaDeChoferes[], int tamChofer)
 {
     int opcion;
 
@@ -523,7 +547,7 @@ void mostrarPorEmpresa(eMicro listaDeMicros[],int tam,eTipo listaDeTipos[],int t
         {
             if(listaDeMicros[i].idEmpresa == opcion)
             {
-				mostrarMicro(listaDeMicros[i],listaDeTipos,tamTipo,listaDeEmpresas,tamEmpresa);
+				mostrarMicro(listaDeMicros[i],listaDeTipos,tamTipo,listaDeEmpresas,tamEmpresa, listaDeChoferes, tamChofer);
             }
             else if(listaDeMicros[i].idEmpresa != opcion)
 			{
@@ -783,5 +807,49 @@ int empresaConMasCapacidad(eMicro listaDeMicros[], int tam, eEmpresa listaDeEmpr
 return todoOk;
 }//fin de la funcion
 
+
+int harcodearMicros(eMicro listaDeMicros[],int tam, int cant, int* pId)
+{
+    int contador=-1;
+    int micros=0;
+
+    if(listaDeMicros!=NULL && tam > 0 && cant>=0 && cant<=tam && pId!=NULL)
+    {
+
+    int idChofer[5]={1,2,3,4,5};
+
+    int idTipo[5]={5001, 5002, 5003, 5004, 5004};
+
+    int idEmpresa[5]={1001, 1002, 1003, 1002, 1002};
+
+    int capacidad[5]={10,3,50,2,16};
+
+    int idMicro[5]={1,2,3,4,5};
+
+    contador=1;
+
+	for(int i=0; i<cant; i++)
+	{
+		micros= encontrarMicroPorId(listaDeMicros,tam ,idMicro[i]);
+
+		if(micros==-1)
+		{
+			micros= buscarLibre(listaDeMicros, tam);
+		}
+
+		listaDeMicros[micros].idChofer = idChofer[i];
+		listaDeMicros[micros].idTipo = idTipo[i];
+		listaDeMicros[micros].idEmpresa = idEmpresa[i];
+		listaDeMicros[micros].capacidad = capacidad[i];
+		listaDeMicros[micros].id = idMicro[i];
+		listaDeMicros[micros].isEmpty= OCUPADO;
+		contador++;
+
+	}//fin for
+
+  }//fin if null
+
+return contador;
+}//fin de la funcion
 
 
